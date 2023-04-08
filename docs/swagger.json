@@ -11,33 +11,49 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:1323",
+    "host": "localhost:9090",
     "paths": {
-        "/": {
-            "get": {
-                "description": "get request",
-                "summary": "get req",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+        "/user": {
+            "post": {
+                "description": "Создание пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Создание пользователя",
+                "operationId": "CreateOrder",
+                "parameters": [
+                    {
+                        "description": "Входящие данные",
+                        "name": "rq",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.User"
                         }
                     }
-                }
+                ],
+                "responses": {}
             }
-        },
-        "/m": {
-            "get": {
-                "description": "get request",
-                "summary": "get req",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+        }
+    },
+    "definitions": {
+        "model.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }

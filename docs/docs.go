@@ -21,31 +21,47 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/": {
-            "get": {
-                "description": "get request",
-                "summary": "get req",
-                "responses": {
-                    "200": {
-                        "description": "OK",
+        "/user": {
+            "post": {
+                "description": "Создание пользователя",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Создание пользователя",
+                "operationId": "CreateOrder",
+                "parameters": [
+                    {
+                        "description": "Входящие данные",
+                        "name": "rq",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/model.User"
                         }
                     }
-                }
+                ],
+                "responses": {}
             }
-        },
-        "/m": {
-            "get": {
-                "description": "get request",
-                "summary": "get req",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
+        }
+    },
+    "definitions": {
+        "model.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }
@@ -55,7 +71,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:1323",
+	Host:             "localhost:9090",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Manar Super API",

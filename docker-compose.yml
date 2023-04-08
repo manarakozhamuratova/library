@@ -17,16 +17,24 @@ x-postgres-common:
     retries: 5
 
 services:
-  db:
-    container_name: db
+  postgres:
     <<: *postgres-common
     restart: always
   redis:
     image: redis:alpine
-    networks:
-      - internal
     ports:
       - "6379:6379"
+  app:
+    build: .
+    ports:
+      - "9090:9090"
+    depends_on:
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+    restart: always
+    
 
 volumes:
   onelab_psql:

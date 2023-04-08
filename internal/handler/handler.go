@@ -9,7 +9,7 @@ type Handler struct {
 	srv *service.Service
 }
 
-func NewManager(conf *config.Config, srv *service.Service) *Handler {
+func NewHandler(conf *config.Config, srv *service.Service) *Handler {
 	return &Handler{
 		srv: srv,
 	}

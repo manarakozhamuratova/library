@@ -1,4 +1,14 @@
-host: localhost:1323
+definitions:
+  model.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:9090
 info:
   contact:
     email: support@swagger.io
@@ -9,22 +19,23 @@ info:
   title: Manar Super API
   version: "1.0"
 paths:
-  /:
-    get:
-      description: get request
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: get req
-  /m:
-    get:
-      description: get request
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: get req
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Создание пользователя
+      operationId: CreateOrder
+      parameters:
+      - description: Входящие данные
+        in: body
+        name: rq
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses: {}
+      summary: Создание пользователя
+      tags:
+      - user
 swagger: "2.0"
