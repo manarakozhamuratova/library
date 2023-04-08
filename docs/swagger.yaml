@@ -1,0 +1,30 @@
+host: localhost:1323
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is my first swagger documentation.
+  termsOfService: http://swagger.io/terms/
+  title: Manar Super API
+  version: "1.0"
+paths:
+  /:
+    get:
+      description: get request
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: get req
+  /m:
+    get:
+      description: get request
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: get req
+swagger: "2.0"
