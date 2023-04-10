@@ -1,4 +1,0 @@
-SERVER_ADDRESS: "0.0.0.0:9090"
-DB_NAME: "one-lab"
-DB_USER: "postgres"
-DB_PASS: "postgres"

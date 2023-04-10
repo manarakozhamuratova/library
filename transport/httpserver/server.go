@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/manarakozhamuratova/one-lab-task2/config"
-	"github.com/manarakozhamuratova/one-lab-task2/internal/handler"
+	"github.com/manarakozhamuratova/one-lab-task2/transport/httpserver/handler"
 )
 
 type Server struct {

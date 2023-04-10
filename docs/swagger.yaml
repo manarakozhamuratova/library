@@ -1,4 +1,32 @@
 definitions:
+  model.AuthResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  model.AuthUser:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.CreateResp:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+    type: object
+  model.UpdatePassword:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+      re_new_password:
+        type: string
+    type: object
   model.User:
     properties:
       email:
@@ -19,12 +47,33 @@ info:
   title: Manar Super API
   version: "1.0"
 paths:
+  /auth:
+    post:
+      consumes:
+      - application/json
+      description: Аутентификация пользователя
+      parameters:
+      - description: Входящие данные
+        in: body
+        name: rq
+        required: true
+        schema:
+          $ref: '#/definitions/model.AuthUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AuthResponse'
+      summary: Аутентификация пользователя
+      tags:
+      - user
   /user:
     post:
       consumes:
       - application/json
       description: Создание пользователя
-      operationId: CreateOrder
       parameters:
       - description: Входящие данные
         in: body
@@ -34,8 +83,36 @@ paths:
           $ref: '#/definitions/model.User'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CreateResp'
       summary: Создание пользователя
       tags:
       - user
+    put:
+      consumes:
+      - application/json
+      description: Обновление пароля пользователя
+      parameters:
+      - description: Входящие данные
+        in: body
+        name: rq
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdatePassword'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление пароля пользователя
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
