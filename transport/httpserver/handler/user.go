@@ -42,12 +42,12 @@ func (h *Handler) Auth(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	err := h.srv.User.Auth(c.Request().Context(), req)
+	id, err := h.srv.User.Auth(c.Request().Context(), req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
 	}
 
-	token, err := h.jwt.GenerateJWT(req.Username)
+	token, err := h.jwt.GenerateJWT(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
 	}
@@ -70,13 +70,47 @@ func (h *Handler) UpdatePassword(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	username, ok := c.Request().Context().Value(model.ContextUsername).(string)
+	id, ok := c.Request().Context().Value(model.ContextUsername).(uint)
 	if !ok {
 		return echo.NewHTTPError(http.StatusUnauthorized, nil)
 	}
-	req.Username = username
+	req.ID = id
 	if err := h.srv.User.UpdatePassword(c.Request().Context(), req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, nil)
+}
+
+// GetUsersWithActiveBorrowedBooks godoc
+// @Summary      Получение списка пользователей с активными книгами
+// @Description  Получение списка пользователей с активными книгами
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Router       /user [get]
+// @Success	     200  {array}  model.UserListing
+// @Security 	 ApiKeyAuth
+func (h *Handler) GetUsersWithActiveBorrowedBooks(c echo.Context) error {
+	users, err := h.srv.User.GetUsersWithActiveBorrowedBooks(c.Request().Context())
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, users)
+}
+
+// GetUsersWithBorrowedBookCountByDate godoc
+// @Summary      Получение списка пользователей с количеством книгом за последние 30 дней
+// @Description  Получение списка пользователей с количеством книгом за последние 30 дней
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Router       /user/count_books [get]
+// @Success	     200  {array}  model.UserListingBookCount
+// @Security 	 ApiKeyAuth
+func (h *Handler) GetUsersWithBorrowedBookCountByDate(c echo.Context) error {
+	users, err := h.srv.User.GetUsersWithBorrowedBookCountByDate(c.Request().Context())
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, users)
 }

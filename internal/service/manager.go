@@ -7,7 +7,7 @@ import (
 )
 
 type Manager struct {
-	// Book IBook
+	Book IBookService
 	User IUserService
 }
 
@@ -19,10 +19,10 @@ func NewManager(storage *storage.Storage) (*Manager, error) {
 	}
 	uSrv := NewUserService(storage)
 
-	// bSrv := NewBookService(storage, *uSrv)
+	bSrv := NewBookService(storage)
 
 	return &Manager{
-		// Book: bSrv,
+		Book: bSrv,
 		User: uSrv,
 	}, nil
 }

@@ -23,10 +23,10 @@ func NewJWTAuth(cfg *config.Config, user service.IUserService) *JWTAuth {
 	return &JWTAuth{jwtKey: []byte(cfg.JWTKey), User: user}
 }
 
-func (m *JWTAuth) GenerateJWT(username string) (tokenString string, err error) {
+func (m *JWTAuth) GenerateJWT(id uint) (tokenString string, err error) {
 	expirationTime := time.Now().Add(1000 * time.Hour)
 	claims := &model.JWTClaim{
-		Username: username,
+		ID: id,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -65,7 +65,7 @@ func (m *JWTAuth) ValidateAuth(next echo.HandlerFunc) echo.HandlerFunc {
 				return echo.NewHTTPError(http.StatusForbidden, err.Error())
 			}
 
-			ctx := context.WithValue(c.Request().Context(), model.ContextUsername, claims.Username)
+			ctx := context.WithValue(c.Request().Context(), model.ContextUsername, claims.ID)
 			c.SetRequest(c.Request().WithContext(ctx))
 		}
 		return next(c)

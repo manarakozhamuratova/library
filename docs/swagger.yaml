@@ -11,6 +11,22 @@ definitions:
       username:
         type: string
     type: object
+  model.Book:
+    properties:
+      author:
+        type: string
+      name:
+        type: string
+    type: object
+  model.BorrowedBook:
+    properties:
+      borrow_date:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   model.CreateResp:
     properties:
       createdAt:
@@ -33,6 +49,22 @@ definitions:
         type: string
       password:
         type: string
+      username:
+        type: string
+    type: object
+  model.UserListing:
+    properties:
+      borrowed_books:
+        items:
+          $ref: '#/definitions/model.BorrowedBook'
+        type: array
+      username:
+        type: string
+    type: object
+  model.UserListingBookCount:
+    properties:
+      count:
+        type: integer
       username:
         type: string
     type: object
@@ -69,7 +101,93 @@ paths:
       summary: Аутентификация пользователя
       tags:
       - user
+  /book:
+    post:
+      consumes:
+      - application/json
+      description: Создание книги
+      parameters:
+      - description: Входящие данные
+        in: body
+        name: rq
+        required: true
+        schema:
+          $ref: '#/definitions/model.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      summary: Создание книги
+      tags:
+      - book
+  /book/{id}/give:
+    get:
+      consumes:
+      - application/json
+      description: Вернуть книгу
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Вернуть книгу
+      tags:
+      - book
+  /book/{id}/take:
+    get:
+      consumes:
+      - application/json
+      description: Взять книгу
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Взять книгу
+      tags:
+      - book
   /user:
+    get:
+      consumes:
+      - application/json
+      description: Получение списка пользователей с активными книгами
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserListing'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Получение списка пользователей с активными книгами
+      tags:
+      - user
     post:
       consumes:
       - application/json
@@ -108,6 +226,27 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Обновление пароля пользователя
+      tags:
+      - user
+  /user/count_books:
+    get:
+      consumes:
+      - application/json
+      description: Получение списка пользователей с количеством книгом за последние
+        30 дней
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserListingBookCount'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Получение списка пользователей с количеством книгом за последние 30
+        дней
       tags:
       - user
 securityDefinitions:

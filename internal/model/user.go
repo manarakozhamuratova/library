@@ -21,10 +21,22 @@ type AuthUser struct {
 }
 
 type UpdatePassword struct {
-	Username      string `json:"-" swaggerignore:"true"`
+	ID            uint   `json:"-" swaggerignore:"true"`
 	OldPassword   string `json:"old_password"`
 	NewPassword   string `json:"new_password"`
 	ReNewPassword string `json:"re_new_password"`
+}
+
+type UserListing struct {
+	ID            uint           `gorm:"primarykey" swaggerignore:"true"`
+	Username      string         `json:"username" gorm:"unique"`
+	BorrowedBooks []BorrowedBook `json:"borrowed_books" gorm:"-"`
+}
+
+type UserListingBookCount struct {
+	ID       uint   `gorm:"primarykey" swaggerignore:"true"`
+	Username string `json:"username" gorm:"unique"`
+	Count    uint   `json:"count" gorm:"-"`
 }
 
 type contextKey string

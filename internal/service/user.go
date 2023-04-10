@@ -14,8 +14,10 @@ type IUserService interface {
 	Create(ctx context.Context, req model.User) (model.CreateResp, error)
 	CheckPassword(encPass, providedPassword string) error
 	HashPassword(password string) (string, error)
-	Auth(ctx context.Context, user model.AuthUser) error
+	Auth(ctx context.Context, user model.AuthUser) (uint, error)
 	UpdatePassword(ctx context.Context, user model.UpdatePassword) error
+	GetUsersWithActiveBorrowedBooks(ctx context.Context) ([]model.UserListing, error)
+	GetUsersWithBorrowedBookCountByDate(ctx context.Context) ([]model.UserListingBookCount, error)
 }
 
 var _ IUserService = (*UserService)(nil)
@@ -26,11 +28,6 @@ type UserService struct {
 
 func NewUserService(repo *storage.Storage) *UserService {
 	return &UserService{repo: repo}
-}
-
-func (s *UserService) Get() {
-	//TODO implement me
-	panic("implement me")
 }
 
 func (s *UserService) Create(ctx context.Context, user model.User) (model.CreateResp, error) {
@@ -54,16 +51,16 @@ func (s *UserService) HashPassword(password string) (string, error) {
 	return string(bytes), nil
 }
 
-func (s *UserService) Auth(ctx context.Context, user model.AuthUser) error {
+func (s *UserService) Auth(ctx context.Context, user model.AuthUser) (uint, error) {
 	userFromDB, userErr := s.repo.User.GetByUsername(ctx, user.Username)
 	if userErr != nil {
-		return userErr
+		return 0, userErr
 	}
 	checkErr := s.CheckPassword(userFromDB.Password, user.Password)
 	if checkErr != nil {
-		return checkErr
+		return 0, checkErr
 	}
-	return nil
+	return userFromDB.ID, nil
 }
 
 func (s *UserService) Update(ctx context.Context, user model.User) error {
@@ -83,7 +80,7 @@ func (s *UserService) UpdatePassword(ctx context.Context, upd model.UpdatePasswo
 	if upd.NewPassword != upd.ReNewPassword {
 		return errors.New("new password does not equal to new re password ")
 	}
-	user, err := s.repo.User.GetByUsername(ctx, upd.Username)
+	user, err := s.repo.User.Get(ctx, upd.ID)
 	if err != nil {
 		return err
 	}
@@ -92,4 +89,12 @@ func (s *UserService) UpdatePassword(ctx context.Context, upd model.UpdatePasswo
 	}
 	user.Password = upd.NewPassword
 	return s.Update(ctx, user)
+}
+
+func (s *UserService) GetUsersWithActiveBorrowedBooks(ctx context.Context) ([]model.UserListing, error) {
+	return s.repo.User.GetUsersWithActiveBorrowedBooks(ctx)
+}
+
+func (s *UserService) GetUsersWithBorrowedBookCountByDate(ctx context.Context) ([]model.UserListingBookCount, error) {
+	return s.repo.User.GetUsersWithBorrowedBookCountByDate(ctx)
 }
