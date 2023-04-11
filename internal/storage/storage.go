@@ -33,9 +33,6 @@ type IUserRepository interface {
 	GetAll(ctx context.Context) ([]model.User, error)
 	GetByUsername(ctx context.Context, username string) (model.User, error)
 	Get(ctx context.Context, id uint) (model.User, error)
-	CheckIsPhoneExist(ctx context.Context, username string) (bool, error)
-	IsVerified(ctx context.Context, username string) (bool, error)
-	Verify(ctx context.Context, username string) error
 	GetUsersWithActiveBorrowedBooks(ctx context.Context) ([]model.UserListing, error)
 	GetUsersWithBorrowedBookCountByDate(ctx context.Context) ([]model.UserListingBookCount, error)
 }

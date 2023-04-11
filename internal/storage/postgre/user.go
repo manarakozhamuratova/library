@@ -12,29 +12,6 @@ type UserRepo struct {
 	DB *gorm.DB
 }
 
-func (r *UserRepo) CheckIsPhoneExist(ctx context.Context, username string) (bool, error) {
-	var cnt int64
-	err := r.DB.WithContext(ctx).Table("users").Where("username = ?", username).Count(&cnt).Error
-	return cnt > 0, err
-}
-
-func (r *UserRepo) Verify(ctx context.Context, username string) error {
-	return r.DB.WithContext(ctx).Table("users").
-		Where("username = ?", username).
-		UpdateColumn("is_verify", true).Error
-}
-
-func (r *UserRepo) IsVerified(ctx context.Context, username string) (bool, error) {
-	var resp bool
-	err := r.DB.WithContext(ctx).
-		Table("users").
-		Select("is_verify").
-		Where("username = ?", username).
-		Find(&resp).Error
-	return true, err
-
-}
-
 func NewUserRepo(DB *gorm.DB) *UserRepo {
 	return &UserRepo{DB: DB}
 }
