@@ -47,13 +47,13 @@ func run() error {
 		log.Fatal("storage init failed: ", err)
 	}
 
-	manager, err := service.NewService(st)
+	srv, err := service.NewService(st)
 	if err != nil {
-		log.Fatal("manager init failed: ", err)
+		log.Fatal("srv init failed: ", err)
 	}
 
-	jwt := middleware.NewJWTAuth(cfg, manager.User)
-	handlers := handler.NewHandler(cfg, manager, jwt)
+	jwt := middleware.NewJWTAuth(cfg, srv.User)
+	handlers := handler.NewHandler(cfg, srv, jwt)
 	server := httpserver.NewServer(cfg, handlers)
 	server.StartHTTPServer(ctx)
 	return nil
