@@ -70,11 +70,11 @@ func (b *BookService) BuyABook(ctx context.Context, tr model.Transaction) error 
 	if err != nil {
 		return err
 	}
-	if *user.Wallet < book.Price {
+	if user.Wallet < book.Price {
 		return errors.New("not enough money")
 	}
 	tr.Sum = book.Price
-	*user.Wallet = *user.Wallet - book.Price
+	user.Wallet = user.Wallet - book.Price
 	if err := b.repo.User.Update(ctx, user); err != nil {
 		return err
 	}

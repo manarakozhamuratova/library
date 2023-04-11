@@ -48,7 +48,7 @@ func (r *UserRepo) Create(ctx context.Context, user model.User) (model.CreateRes
 }
 
 func (r *UserRepo) Update(ctx context.Context, user model.User) error {
-	return r.DB.Where("username = ?", user.Username).Omit("wallet").Updates(&user).Error
+	return r.DB.Model(&user).Where("username = ?", user.Username).Omit("wallet").Updates(user).Error
 }
 
 func (r *UserRepo) Delete(ctx context.Context, ID int) error {
