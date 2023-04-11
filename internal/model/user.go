@@ -7,7 +7,7 @@ type User struct {
 	Username  string    `json:"username" gorm:"unique"`
 	Email     string    `json:"email" gorm:"unique"`
 	Password  string    `json:"password"`
-	Wallet    int       `json:"wallet" gorm:"not null"`
+	Wallet    *int      `json:"wallet" gorm:"not null"`
 	CreatedAt time.Time `swaggerignore:"true"`
 }
 
