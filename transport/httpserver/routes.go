@@ -12,5 +12,5 @@ func (s *Server) SetupRoutes() {
 	s.App.POST("/book", s.handler.CreateBook)
 	s.App.GET("/book/:id/take", s.handler.TakeABook, s.handler.JWT().ValidateAuth)
 	s.App.GET("/book/:id/give", s.handler.GiveTheBook, s.handler.JWT().ValidateAuth)
-
+	s.App.GET("/book/:id/buy", s.handler.BuyABook, s.handler.JWT().ValidateAuth)
 }

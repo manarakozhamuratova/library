@@ -8,6 +8,7 @@ type Book struct {
 	ID        uint      `json:"-" gorm:"primaryKey" swaggerignore:"true"`
 	Name      string    `gorm:"not null"`
 	Author    string    `gorm:"not null"`
+	Price     int       `gorm:"not null"`
 	CreatedAt time.Time `swaggerignore:"true"`
 }
 

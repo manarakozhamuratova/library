@@ -13,7 +13,7 @@ import (
 	"github.com/manarakozhamuratova/one-lab-task2/transport/httpserver/middleware"
 )
 
-// @title Manar Super API
+// @title Super API
 // @version 1.0
 // @description This is my first swagger documentation.
 // @termsOfService http://swagger.io/terms/
@@ -39,7 +39,9 @@ func run() error {
 	if err != nil {
 		return err
 	}
-
+	if err := cfg.Validate(); err != nil {
+		return err
+	}
 	st, err := storage.New(ctx, cfg)
 	if err != nil {
 		log.Fatal("storage init failed: ", err)

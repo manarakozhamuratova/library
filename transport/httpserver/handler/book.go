@@ -80,3 +80,29 @@ func (h *Handler) GiveTheBook(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, nil)
 }
+
+// CreateTransaction godoc
+// @Summary      Купить книгу
+// @Description  Купить книгу
+// @Tags         book
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Book ID"
+// @Success	     200  {}  uint
+// @Router       /book/{id}/buy [GET]
+// @Security 	 ApiKeyAuth
+func (h *Handler) BuyABook(c echo.Context) error {
+	bookID, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	userId, ok := c.Request().Context().Value(model.ContextUsername).(uint)
+	if !ok {
+		return echo.NewHTTPError(http.StatusUnauthorized, nil)
+	}
+	err := h.srv.Book.BuyABook(c.Request().Context(), model.Transaction{
+		UserID: userId,
+		BookID: uint(bookID),
+	})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, nil)
+}

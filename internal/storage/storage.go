@@ -42,10 +42,17 @@ type IUserRepository interface {
 
 var _ IUserRepository = (*postgre.UserRepo)(nil)
 
+type ITransactionRepository interface {
+	Create(ctx context.Context, tr *model.Transaction) error
+}
+
+var _ ITransactionRepository = (*postgre.TransactionRepository)(nil)
+
 type Storage struct {
-	pg   *gorm.DB
-	Book IBookRepository
-	User IUserRepository
+	pg          *gorm.DB
+	Book        IBookRepository
+	User        IUserRepository
+	Transaction ITransactionRepository
 }
 
 func New(ctx context.Context, cfg *config.Config) (*Storage, error) {
@@ -75,9 +82,11 @@ func New(ctx context.Context, cfg *config.Config) (*Storage, error) {
 
 	uRepo := postgre.NewUserRepo(pgDB)
 	bRepo := postgre.NewBookRepository(pgDB)
+	trRepo := postgre.NewTransactionRepository(pgDB)
 
 	var storage Storage
 	storage.User = uRepo
 	storage.Book = bRepo
+	storage.Transaction = trRepo
 	return &storage, nil
 }

@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -13,6 +14,7 @@ type IBookService interface {
 	Create(ctx context.Context, book model.Book) (uint, error)
 	TakeABook(ctx context.Context, op model.BookOperation) error
 	GiveTheBook(ctx context.Context, op model.BookOperation) error
+	BuyABook(ctx context.Context, tr model.Transaction) error
 }
 
 var _ IBookService = (*BookService)(nil)
@@ -57,4 +59,24 @@ func (b *BookService) GiveTheBook(ctx context.Context, op model.BookOperation) e
 	t := time.Now().UTC()
 	bookStatus.ReturnDate = &t
 	return b.repo.Book.Update(ctx, bookStatus)
+}
+
+func (b *BookService) BuyABook(ctx context.Context, tr model.Transaction) error {
+	user, err := b.repo.User.Get(ctx, tr.UserID)
+	if err != nil {
+		return err
+	}
+	book, err := b.repo.Book.Get(ctx, tr.BookID)
+	if err != nil {
+		return err
+	}
+	if user.Wallet < book.Price {
+		return errors.New("not enough money")
+	}
+	tr.Sum = book.Price
+	user.Wallet = user.Wallet - book.Price
+	if err := b.repo.User.Update(ctx, user); err != nil {
+		return err
+	}
+	return b.repo.Transaction.Create(ctx, &tr)
 }

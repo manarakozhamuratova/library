@@ -2,7 +2,6 @@ package config
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -20,14 +19,41 @@ type Config struct {
 }
 
 var (
-	ErrEmptyServerAddress = errors.New("empty server address")
+	ErrEmptyServerAddress    = errors.New("empty server address")
+	ErrEmptyDBName           = errors.New("empty db name")
+	ErrEmptyDBUser           = errors.New("empty db user")
+	ErrEmptyDBPass           = errors.New("empty db pass")
+	ErrEmptyDBHost           = errors.New("empty db host")
+	ErrEmptyDBPort           = errors.New("empty db port")
+	ErrEmptyJWTKey           = errors.New("empty JWTKey")
+	ErrEmptyDBMigrationsPath = errors.New("empty DBMigrationsPath")
 )
 
 func (c *Config) Validate() error {
 	if c.ServerAddress == "" {
 		return ErrEmptyServerAddress
 	}
-	// if ser
+	if c.DBName == "" {
+		return ErrEmptyDBName
+	}
+	if c.DBUser == "" {
+		return ErrEmptyDBUser
+	}
+	if c.DBPass == "" {
+		return ErrEmptyDBPass
+	}
+	if c.DBHost == "" {
+		return ErrEmptyDBHost
+	}
+	if c.DBPort == "" {
+		return ErrEmptyDBPort
+	}
+	if c.JWTKey == "" {
+		return ErrEmptyJWTKey
+	}
+	if c.DBMigrationsPath == "" {
+		return ErrEmptyDBMigrationsPath
+	}
 	return nil
 }
 
@@ -40,6 +66,5 @@ func ParseYAML() (*Config, error) {
 	if err := yaml.Unmarshal(body, &cfg); err != nil {
 		return nil, err
 	}
-	fmt.Println(cfg.DBHost)
 	return &cfg, nil
 }

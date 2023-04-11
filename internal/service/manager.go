@@ -18,9 +18,7 @@ func NewManager(storage *storage.Storage) (*Manager, error) {
 		return nil, ErrEmptyStorage
 	}
 	uSrv := NewUserService(storage)
-
 	bSrv := NewBookService(storage)
-
 	return &Manager{
 		Book: bSrv,
 		User: uSrv,

@@ -17,6 +17,8 @@ definitions:
         type: string
       name:
         type: string
+      price:
+        type: integer
     type: object
   model.BorrowedBook:
     properties:
@@ -51,6 +53,8 @@ definitions:
         type: string
       username:
         type: string
+      wallet:
+        type: integer
     type: object
   model.UserListing:
     properties:
@@ -76,7 +80,7 @@ info:
     url: http://www.swagger.io/support
   description: This is my first swagger documentation.
   termsOfService: http://swagger.io/terms/
-  title: Manar Super API
+  title: Super API
   version: "1.0"
 paths:
   /auth:
@@ -121,6 +125,29 @@ paths:
           schema:
             type: ""
       summary: Создание книги
+      tags:
+      - book
+  /book/{id}/buy:
+    get:
+      consumes:
+      - application/json
+      description: Купить книгу
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Купить книгу
       tags:
       - book
   /book/{id}/give:

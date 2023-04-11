@@ -89,6 +89,43 @@ const docTemplate = `{
                 }
             }
         },
+        "/book/{id}/buy": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Купить книгу",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "book"
+                ],
+                "summary": "Купить книгу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Book ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                }
+            }
+        },
         "/book/{id}/give": {
             "get": {
                 "security": [
@@ -316,6 +353,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "price": {
+                    "type": "integer"
                 }
             }
         },
@@ -369,6 +409,9 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                },
+                "wallet": {
+                    "type": "integer"
                 }
             }
         },
@@ -413,7 +456,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:9090",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Manar Super API",
+	Title:            "Super API",
 	Description:      "This is my first swagger documentation.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is my first swagger documentation.",
-        "title": "Manar Super API",
+        "title": "Super API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
@@ -69,6 +69,43 @@
                         "schema": {
                             "$ref": "#/definitions/model.Book"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                }
+            }
+        },
+        "/book/{id}/buy": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Купить книгу",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "book"
+                ],
+                "summary": "Купить книгу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Book ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -308,6 +345,9 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "price": {
+                    "type": "integer"
                 }
             }
         },
@@ -361,6 +401,9 @@
                 },
                 "username": {
                     "type": "string"
+                },
+                "wallet": {
+                    "type": "integer"
                 }
             }
         },
