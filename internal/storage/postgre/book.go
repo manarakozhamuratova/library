@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/manarakozhamuratova/one-lab-task2/internal/model"
+	"github.com/manarakozhamuratova/one-lab-task2/validation"
 	"gorm.io/gorm"
 )
 
@@ -22,6 +23,9 @@ func (r *BookRepository) Get(ctx context.Context, id uint) (model.Book, error) {
 }
 
 func (r *BookRepository) Create(ctx context.Context, book model.Book) (uint, error) {
+	if err := validation.ValidateBook(&book); err != nil {
+		return 0, err
+	}
 	result := r.DB.WithContext(ctx).Create(&book)
 	return book.ID, result.Error
 }

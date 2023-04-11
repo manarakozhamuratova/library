@@ -1,15 +1,20 @@
+## 3 Домашнее задание DB = Postgres : 
 ```bash
-swag init -g cmd/main.go
-docker volume create onelab_psql
-docker compose up -d
-docker image build -t onelab .
+- Реализовать сохранение, обновление пароля у пользователя 
+- Реализовать проверку JWT токенов 
+- Реализовать сущность книг (Название, автор)
+- Реализовать сущность истории выдачи книг (кто брал, когда вернул) 
+- Реализовать ендпоинты 
+ - Получить текущих пользователей со списком книг который у них сейчас на руках 
+ - Список пользователей с количеством книг за последний месяц 
+
+Бонус: 
+- Офорлменная swagger документация
 ```
 
-## migrations
-
+## 4 Домашнее задание: 
+```bash
+Собрать свое приложение в докер контейнер и добавить docker-compose с зависимостями pg + redis 
+Реализовать отдельный микро-сервис транзакций (денежных переводов)
 ```
-export POSTGRES_URL='postgres://demo:postgres@localhost:5432/onelab?sslmode=disable'
 
-migrate create -ext sql -dir internal/storage/postgre/migrations -seq create_users
-
-```

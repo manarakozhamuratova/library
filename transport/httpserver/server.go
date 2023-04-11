@@ -10,7 +10,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/manarakozhamuratova/one-lab-task2/config"
+	"github.com/manarakozhamuratova/one-lab-task2/logger"
 	"github.com/manarakozhamuratova/one-lab-task2/transport/httpserver/handler"
+	"go.uber.org/zap"
 )
 
 type Server struct {
@@ -52,12 +54,16 @@ func (s *Server) BuildEngine() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{"*"},
 	}))
+	l := logger.Logger(context.Background())
 	e.Use(middleware.RequestID())
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
 		LogURI:    true,
 		LogStatus: true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
-			log.Println("request, status", v.URI, v.Status)
+			l.Info("request",
+				zap.String("URI", v.URI),
+				zap.Int("status", v.Status),
+			)
 			return nil
 		},
 	}))

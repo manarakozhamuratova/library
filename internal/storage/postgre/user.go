@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/manarakozhamuratova/one-lab-task2/internal/model"
+	"github.com/manarakozhamuratova/one-lab-task2/validation"
 	"gorm.io/gorm"
 )
 
@@ -17,6 +18,9 @@ func NewUserRepo(DB *gorm.DB) *UserRepo {
 }
 
 func (r *UserRepo) Create(ctx context.Context, user model.User) (model.CreateResp, error) {
+	if err := validation.ValidateUser(&user); err != nil {
+		return model.CreateResp{}, err
+	}
 	result := r.DB.WithContext(ctx).Omit("deleted_at").Create(&user)
 	return model.CreateResp{
 		ID:        user.ID,

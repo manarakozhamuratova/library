@@ -2,13 +2,15 @@ package model
 
 import (
 	"time"
+
+	_ "github.com/go-playground/validator/v10"
 )
 
 type Book struct {
 	ID        uint      `json:"-" gorm:"primaryKey" swaggerignore:"true"`
-	Name      string    `gorm:"not null"`
-	Author    string    `gorm:"not null"`
-	Price     int       `gorm:"not null"`
+	Name      string    `gorm:"not null" validate:"required"`
+	Author    string    `gorm:"not null" validate:"required"`
+	Price     int       `gorm:"not null" validate:"required"`
 	CreatedAt time.Time `swaggerignore:"true"`
 }
 
