@@ -6,20 +6,20 @@ import (
 	"github.com/manarakozhamuratova/one-lab-task2/internal/storage"
 )
 
-type Manager struct {
+type Service struct {
 	Book IBookService
 	User IUserService
 }
 
 var ErrEmptyStorage = errors.New("no storage provided")
 
-func NewManager(storage *storage.Storage) (*Manager, error) {
+func NewService(storage *storage.Storage) (*Service, error) {
 	if storage == nil {
 		return nil, ErrEmptyStorage
 	}
 	uSrv := NewUserService(storage)
 	bSrv := NewBookService(storage)
-	return &Manager{
+	return &Service{
 		Book: bSrv,
 		User: uSrv,
 	}, nil

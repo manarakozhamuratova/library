@@ -7,7 +7,7 @@ import (
 )
 
 type Handler struct {
-	srv *service.Manager
+	srv *service.Service
 	jwt *middleware.JWTAuth
 }
 
@@ -15,7 +15,7 @@ func (h *Handler) JWT() *middleware.JWTAuth {
 	return h.jwt
 }
 
-func NewHandler(conf *config.Config, srv *service.Manager, jwt *middleware.JWTAuth) *Handler {
+func NewHandler(conf *config.Config, srv *service.Service, jwt *middleware.JWTAuth) *Handler {
 	return &Handler{
 		srv: srv,
 		jwt: jwt,

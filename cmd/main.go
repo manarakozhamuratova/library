@@ -47,7 +47,7 @@ func run() error {
 		log.Fatal("storage init failed: ", err)
 	}
 
-	manager, err := service.NewManager(st)
+	manager, err := service.NewService(st)
 	if err != nil {
 		log.Fatal("manager init failed: ", err)
 	}
