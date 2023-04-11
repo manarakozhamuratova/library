@@ -102,7 +102,7 @@ func (h *Handler) BuyABook(c echo.Context) error {
 		BookID: uint(bookID),
 	})
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, nil)
 }
