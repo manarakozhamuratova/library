@@ -30,7 +30,6 @@ type IUserRepository interface {
 	Create(ctx context.Context, user model.User) (model.CreateResp, error)
 	Update(ctx context.Context, user model.User) error
 	Delete(ctx context.Context, ID int) error
-	GetAll(ctx context.Context) ([]model.User, error)
 	GetByUsername(ctx context.Context, username string) (model.User, error)
 	Get(ctx context.Context, id uint) (model.User, error)
 	GetUsersWithActiveBorrowedBooks(ctx context.Context) ([]model.UserListing, error)

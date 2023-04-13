@@ -35,12 +35,6 @@ func (r *UserRepo) Delete(ctx context.Context, ID int) error {
 	return r.DB.WithContext(ctx).Delete(&model.User{}, ID).Error
 }
 
-func (r *UserRepo) GetAll(ctx context.Context) ([]model.User, error) {
-	var resp []model.User
-	err := r.DB.WithContext(ctx).Find(&resp)
-	return resp, err.Error
-}
-
 func (r *UserRepo) GetByUsername(ctx context.Context, username string) (model.User, error) {
 	var res model.User
 	err := r.DB.WithContext(ctx).Where("username = ?", username).First(&res).Error
