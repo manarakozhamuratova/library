@@ -12,6 +12,7 @@ import (
 	"github.com/manarakozhamuratova/one-lab-task2/config"
 	"github.com/manarakozhamuratova/one-lab-task2/logger"
 	"github.com/manarakozhamuratova/one-lab-task2/transport/httpserver/handler"
+	"github.com/manarakozhamuratova/one-lab-task2/validator"
 	"go.uber.org/zap"
 )
 
@@ -54,6 +55,7 @@ func (s *Server) BuildEngine() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowHeaders: []string{"*"},
 	}))
+	e.Validator = validator.NewValidator()
 	l := logger.Logger(context.Background())
 	e.Use(middleware.RequestID())
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{

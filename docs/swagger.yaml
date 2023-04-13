@@ -19,6 +19,10 @@ definitions:
         type: string
       price:
         type: integer
+    required:
+    - author
+    - name
+    - price
     type: object
   model.BorrowedBook:
     properties:
@@ -55,6 +59,11 @@ definitions:
         type: string
       wallet:
         type: integer
+    required:
+    - email
+    - password
+    - username
+    - wallet
     type: object
   model.UserListing:
     properties:
@@ -127,8 +136,31 @@ paths:
       summary: Создание книги
       tags:
       - book
+  /book/{id}/borrow:
+    post:
+      consumes:
+      - application/json
+      description: Взять книгу
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Взять книгу
+      tags:
+      - book
   /book/{id}/buy:
-    get:
+    post:
       consumes:
       - application/json
       description: Купить книгу
@@ -150,8 +182,8 @@ paths:
       summary: Купить книгу
       tags:
       - book
-  /book/{id}/give:
-    get:
+  /book/{id}/return:
+    post:
       consumes:
       - application/json
       description: Вернуть книгу
@@ -171,29 +203,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Вернуть книгу
-      tags:
-      - book
-  /book/{id}/take:
-    get:
-      consumes:
-      - application/json
-      description: Взять книгу
-      parameters:
-      - description: Book ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: ""
-      security:
-      - ApiKeyAuth: []
-      summary: Взять книгу
       tags:
       - book
   /user:

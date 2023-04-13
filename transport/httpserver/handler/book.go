@@ -37,7 +37,7 @@ func (h *Handler) CreateBook(c echo.Context) error {
 // @Produce      json
 // @Param        id   path      int  true  "Book ID"
 // @Success	     200  {}  uint
-// @Router       /book/{id}/take [GET]
+// @Router       /book/{id}/borrow [post]
 // @Security 	 ApiKeyAuth
 func (h *Handler) TakeABook(c echo.Context) error {
 	bookID, _ := strconv.ParseUint(c.Param("id"), 10, 32)
@@ -63,7 +63,7 @@ func (h *Handler) TakeABook(c echo.Context) error {
 // @Produce      json
 // @Param        id   path      int  true  "Book ID"
 // @Success	     200  {}  uint
-// @Router       /book/{id}/give [GET]
+// @Router       /book/{id}/return [post]
 // @Security 	 ApiKeyAuth
 func (h *Handler) GiveTheBook(c echo.Context) error {
 	bookID, _ := strconv.ParseUint(c.Param("id"), 10, 32)
@@ -89,7 +89,7 @@ func (h *Handler) GiveTheBook(c echo.Context) error {
 // @Produce      json
 // @Param        id   path      int  true  "Book ID"
 // @Success	     200  {}  uint
-// @Router       /book/{id}/buy [GET]
+// @Router       /book/{id}/buy [post]
 // @Security 	 ApiKeyAuth
 func (h *Handler) BuyABook(c echo.Context) error {
 	bookID, _ := strconv.ParseUint(c.Param("id"), 10, 32)

@@ -4,10 +4,10 @@ import "time"
 
 type User struct {
 	ID        uint      `gorm:"primarykey" swaggerignore:"true"`
-	Username  string    `json:"username" gorm:"unique"`
-	Email     string    `json:"email" gorm:"unique"`
-	Password  string    `json:"password"`
-	Wallet    int       `json:"wallet"`
+	Username  string    `json:"username" validate:"required" gorm:"unique"`
+	Email     string    `json:"email" validate:"required" gorm:"unique"`
+	Password  string    `json:"password" validate:"required"`
+	Wallet    int       `json:"wallet" validate:"required"`
 	CreatedAt time.Time `swaggerignore:"true"`
 }
 

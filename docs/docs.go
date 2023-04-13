@@ -89,8 +89,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/book/{id}/borrow": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Взять книгу",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "book"
+                ],
+                "summary": "Взять книгу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Book ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                }
+            }
+        },
         "/book/{id}/buy": {
-            "get": {
+            "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -126,8 +163,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/book/{id}/give": {
-            "get": {
+        "/book/{id}/return": {
+            "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -144,43 +181,6 @@ const docTemplate = `{
                     "book"
                 ],
                 "summary": "Вернуть книгу",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Book ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": ""
-                        }
-                    }
-                }
-            }
-        },
-        "/book/{id}/take": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Взять книгу",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "book"
-                ],
-                "summary": "Взять книгу",
                 "parameters": [
                     {
                         "type": "integer",
@@ -347,6 +347,11 @@ const docTemplate = `{
         },
         "model.Book": {
             "type": "object",
+            "required": [
+                "author",
+                "name",
+                "price"
+            ],
             "properties": {
                 "author": {
                     "type": "string"
@@ -400,6 +405,12 @@ const docTemplate = `{
         },
         "model.User": {
             "type": "object",
+            "required": [
+                "email",
+                "password",
+                "username",
+                "wallet"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
