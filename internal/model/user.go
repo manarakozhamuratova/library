@@ -7,7 +7,7 @@ type User struct {
 	Username  string    `json:"username" validate:"required" gorm:"unique"`
 	Email     string    `json:"email" validate:"required" gorm:"unique"`
 	Password  string    `json:"password" validate:"required"`
-	Wallet    int       `json:"wallet" validate:"required"`
+	Wallet    float64   `json:"wallet" validate:"required"`
 	CreatedAt time.Time `swaggerignore:"true"`
 }
 

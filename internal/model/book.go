@@ -10,7 +10,7 @@ type Book struct {
 	ID        uint      `json:"-" gorm:"primaryKey" swaggerignore:"true"`
 	Name      string    `gorm:"not null" validate:"required"`
 	Author    string    `gorm:"not null" validate:"required"`
-	Price     int       `gorm:"not null" validate:"required"`
+	Price     float64   `gorm:"not null" validate:"required"`
 	CreatedAt time.Time `swaggerignore:"true"`
 }
 
