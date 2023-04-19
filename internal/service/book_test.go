@@ -51,14 +51,13 @@ func TestBookService(t *testing.T) {
 		wantErr      bool
 	}{
 		{
-			name:         "validTransactions",
+			name:         "Valid Transactions",
 			transactions: model.Transaction{UserID: user.ID, BookID: book.ID},
 			mockFuncs: func() {
 				st.User.(*mock.MockIUserRepository).EXPECT().Get(ctx, user.ID).Return(user, nil)
 				st.Book.(*mock.MockIBookRepository).EXPECT().Get(ctx, book.ID).Return(book, nil)
 				st.User.(*mock.MockIUserRepository).EXPECT().Update(ctx, gomock.Any()).Return(nil)
-				st.Transaction.(*mock.MockITransactionRepository).EXPECT().Create(ctx, gomock.Any()).Return(nil)
-
+				st.Transaction.(*mock.MockITransactionRepository).EXPECT().CreateBuyTransaction(ctx, gomock.Any()).Return(nil)
 			},
 
 			wantErr: false,

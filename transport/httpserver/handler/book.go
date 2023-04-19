@@ -106,3 +106,52 @@ func (h *Handler) BuyABook(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, nil)
 }
+
+// RentABook godoc
+// @Summary      Арeндовать книгу
+// @Description  Арeндовать книгу
+// @Tags         book
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Book ID"
+// @Param        rq   body      model.RentDuration  true  "Входящие данные"
+// @Success	     200  {}  uint
+// @Router       /book/{id}/rent [post]
+// @Security 	 ApiKeyAuth
+func (h *Handler) RentABook(c echo.Context) error {
+	bookID, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	userId, ok := c.Request().Context().Value(model.ContextUsername).(uint)
+	if !ok {
+		return echo.NewHTTPError(http.StatusUnauthorized, nil)
+	}
+	var req model.RentDuration
+	if err := c.Bind(&req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	err := h.srv.Book.RentABook(c.Request().Context(), model.Transaction{
+		UserID:   userId,
+		BookID:   uint(bookID),
+		Duration: req.Duration,
+	})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, nil)
+}
+
+// ListRentedBooksRevenue godoc
+// @Summary      Получение списка арендованных книг и их сумма заработка
+// @Description  Получение списка арендованных книг и их сумма заработка
+// @Tags         book
+// @Accept       json
+// @Produce      json
+// @Router       /book [get]
+// @Success	     200  {array}  model.RentedBook
+// @Security 	 ApiKeyAuth
+func (h *Handler) ListRentedBooksRevenue(c echo.Context) error {
+	books, err := h.srv.Book.ListRentedBooksRevenue(c.Request().Context())
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, books)
+}

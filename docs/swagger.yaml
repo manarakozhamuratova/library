@@ -18,7 +18,7 @@ definitions:
       name:
         type: string
       price:
-        type: integer
+        type: number
     required:
     - author
     - name
@@ -40,6 +40,20 @@ definitions:
       id:
         type: integer
     type: object
+  model.RentDuration:
+    properties:
+      duration:
+        type: integer
+    type: object
+  model.RentedBook:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      sum:
+        type: integer
+    type: object
   model.UpdatePassword:
     properties:
       new_password:
@@ -58,7 +72,7 @@ definitions:
       username:
         type: string
       wallet:
-        type: integer
+        type: number
     required:
     - email
     - password
@@ -115,6 +129,24 @@ paths:
       tags:
       - user
   /book:
+    get:
+      consumes:
+      - application/json
+      description: Получение списка арендованных книг и их сумма заработка
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.RentedBook'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Получение списка арендованных книг и их сумма заработка
+      tags:
+      - book
     post:
       consumes:
       - application/json
@@ -180,6 +212,35 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Купить книгу
+      tags:
+      - book
+  /book/{id}/rent:
+    post:
+      consumes:
+      - application/json
+      description: Арeндовать книгу
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Входящие данные
+        in: body
+        name: rq
+        required: true
+        schema:
+          $ref: '#/definitions/model.RentDuration'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: ""
+      security:
+      - ApiKeyAuth: []
+      summary: Арeндовать книгу
       tags:
       - book
   /book/{id}/return:

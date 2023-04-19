@@ -56,6 +56,35 @@ const docTemplate = `{
             }
         },
         "/book": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение списка арендованных книг и их сумма заработка",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "book"
+                ],
+                "summary": "Получение списка арендованных книг и их сумма заработка",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.RentedBook"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Создание книги",
                 "consumes": [
@@ -151,6 +180,52 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": ""
+                        }
+                    }
+                }
+            }
+        },
+        "/book/{id}/rent": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Арeндовать книгу",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "book"
+                ],
+                "summary": "Арeндовать книгу",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Book ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Входящие данные",
+                        "name": "rq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.RentDuration"
+                        }
                     }
                 ],
                 "responses": {
@@ -360,7 +435,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },
@@ -385,6 +460,28 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.RentDuration": {
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.RentedBook": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sum": {
                     "type": "integer"
                 }
             }
@@ -422,7 +519,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "wallet": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },

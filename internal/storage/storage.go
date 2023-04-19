@@ -39,7 +39,8 @@ type IUserRepository interface {
 var _ IUserRepository = (*postgre.UserRepo)(nil)
 
 type ITransactionRepository interface {
-	Create(ctx context.Context, tr *model.Transaction) error
+	CreateBuyTransaction(ctx context.Context, tr *model.Transaction) error
+	ListRentedBooksRevenue(ctx context.Context) ([]model.RentedBook, error)
 }
 
 var _ ITransactionRepository = (*postgre.TransactionRepository)(nil)

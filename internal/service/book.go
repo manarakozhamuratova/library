@@ -15,6 +15,8 @@ type IBookService interface {
 	TakeABook(ctx context.Context, op model.BookOperation) error
 	GiveTheBook(ctx context.Context, op model.BookOperation) error
 	BuyABook(ctx context.Context, tr model.Transaction) error
+	RentABook(ctx context.Context, tr model.Transaction) error
+	ListRentedBooksRevenue(ctx context.Context) ([]model.RentedBook, error)
 }
 
 var _ IBookService = (*BookService)(nil)
@@ -78,5 +80,18 @@ func (b *BookService) BuyABook(ctx context.Context, tr model.Transaction) error 
 	if err := b.repo.User.Update(ctx, user); err != nil {
 		return err
 	}
-	return b.repo.Transaction.Create(ctx, &tr)
+	return b.repo.Transaction.CreateBuyTransaction(ctx, &tr)
+}
+
+const maxRentDay = 365
+
+func (b *BookService) RentABook(ctx context.Context, tr model.Transaction) error {
+	if tr.Duration > maxRentDay || tr.Duration == 0 {
+		return fmt.Errorf("cannot rent a book for more than %d days or for 0 days", maxRentDay)
+	}
+	return b.BuyABook(ctx, tr)
+}
+
+func (b *BookService) ListRentedBooksRevenue(ctx context.Context) ([]model.RentedBook, error) {
+	return b.repo.Transaction.ListRentedBooksRevenue(ctx)
 }

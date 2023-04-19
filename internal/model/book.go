@@ -33,3 +33,9 @@ type BorrowedBook struct {
 	Name       string    `json:"name"`
 	BorrowDate time.Time `json:"borrow_date"`
 }
+
+type RentedBook struct {
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Total uint   `json:"sum"`
+}
